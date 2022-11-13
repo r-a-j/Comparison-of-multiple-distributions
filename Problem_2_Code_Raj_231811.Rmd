@@ -3,6 +3,12 @@ title: "Comparison of multiple distributions"
 author: "Raj Pawar - 231811"
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Installing packages and loading data
+
 ```{r}
 print("Hello World")
 ```
