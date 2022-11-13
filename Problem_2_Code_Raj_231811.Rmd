@@ -1,6 +1,7 @@
 ---
 title: "Comparison of multiple distributions"
 author: "Raj Pawar - 231811"
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
