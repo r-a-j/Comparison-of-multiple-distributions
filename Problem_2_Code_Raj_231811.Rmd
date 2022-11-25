@@ -11,5 +11,5 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Installing packages and loading data
 
 ```{r}
-print("Hello World")
+
 ```
