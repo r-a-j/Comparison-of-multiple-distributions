@@ -1,4 +1,14 @@
-### Introductory Case Studies Report 2
+## Project - 2 
+(Winter Semester 2022 - 2023)\
+Comparison of multiple distributions\
+Author - Raj Anilbhai Pawar\
+Matriculation Number - 231811\
+Group - 17\
+Raj Anilbhai Pawar\
+Amritha Sukhdev Singh Agarwal\
+Sagar Basnet\
+Muhammad Fahad\
+Siddhartha Kark
 
 
 ```python
@@ -22,6 +32,15 @@ import matplotlib
 
 
 ```python
+# Creating a directory for plots if it doesn't exist
+
+if not os.path.isdir('Plots'):
+    os.mkdir("Plots")
+```
+
+
+```python
+# Read dataset
 data = pd.read_csv("SwimmingTimes.csv")
 ```
 
@@ -152,7 +171,6 @@ duplicate
 
 ```python
 # Drop duplicated
-
 data_unique = data.drop_duplicates(subset=['Name'],keep = 'last')
 data_unique
 ```
@@ -259,18 +277,6 @@ data_unique
 
 
 ```python
-data_unique["Time"].plot(kind = "hist", density = True, bins=50)
-plt.show()
-```
-
-
-    
-![png](output_5_0.png)
-    
-
-
-
-```python
 # Checking nans
 nan_rows = data_unique[data_unique.isnull().any(axis=1)]
 print("NAN Rows: ", len(nan_rows))
@@ -278,6 +284,25 @@ print("NAN Rows: ", len(nan_rows))
 
     NAN Rows:  0
     
+
+
+```python
+# Plot histogram to check distribution
+plt.figure(figsize=(10, 8), dpi=200)
+freq_dist_fig = data_unique["Time"].plot(kind = "hist", density = True, bins=50)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Time in seconds', fontsize=15)
+plt.ylabel('Frequency', fontsize=15)
+plt.show()
+freq_dist_fig.figure.savefig('Plots/Hist_Frequency_Distribution.pdf')
+```
+
+
+    
+![png](output_7_0.png)
+    
+
 
 Description of the variables
 
@@ -355,7 +380,7 @@ data_unique.describe()
 
 
 ```python
-# Unique swimming categories in data
+# Check unique swimming categories in data
 categories = data_unique["Category"].unique().tolist()
 categories
 ```
@@ -370,7 +395,6 @@ categories
 
 ```python
 # Grouping data by category
-
 grouped_data = data_unique.groupby("Category")
 category_list = list(grouped_data)
 ```
@@ -378,7 +402,6 @@ category_list = list(grouped_data)
 
 ```python
 # Check Inter Quartile Range (IQR)
-
 x = grouped_data["Time"].describe()
 x["IQR"] = x["75%"] - x["25%"]
 x.round(2)
@@ -497,8 +520,7 @@ x.round(2)
 
 
 ```python
-# separating data into different data frames
-
+# Separating data into different data frames according to swimming categories
 df_backstroke = category_list[0][1]
 df_breaststroke = category_list[1][1]
 df_butterfly = category_list[2][1]
@@ -516,18 +538,16 @@ Descriptive Analysis of variables
 
 
 ```python
-# creating directory to save plots.
-
-if not os.path.isdir('Plots'):
-    os.mkdir("Plots")
-```
-
-
-```python
-# generating box-plot for swimming categories based on time
-
-box_plot = sns.boxplot(y='Time', x='Category', data=data_unique, width=0.6, palette="colorblind")
-box_plot.figure.savefig("Plots/box_plot.pdf", dpi=180)
+# Generate box-plot for swimming categories based on time
+plt.figure(figsize=(10, 8), dpi=200)
+sns.boxplot(y="Category", x="Time", data=data_unique)
+sns.stripplot(y="Category", x="Time", color='black',alpha=0.3,data=data_unique)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Time in seconds', fontsize=15)
+plt.ylabel('Swimming Category', fontsize=15)
+plt.show()
+plt.savefig('Plots/Boxplot_Swimming_Categories.pdf')
 ```
 
 
@@ -536,101 +556,152 @@ box_plot.figure.savefig("Plots/box_plot.pdf", dpi=180)
     
 
 
+
+    <Figure size 432x288 with 0 Axes>
+
+
+
+```python
+# Check individual swimming category variance
+print("variance: %.2f" % df_backstroke['Time'].var())
+print("variance: %.2f" % df_breaststroke['Time'].var())
+print("variance: %.2f" % df_butterfly['Time'].var())
+print("variance: %.2f" % df_freestyle['Time'].var())
+print("variance: %.2f" % df_medley['Time'].var())
+```
+
+    variance: 3.43
+    variance: 2.27
+    variance: 6.82
+    variance: 2.43
+    variance: 2.52
+    
+
 QQ Plots - Used to test assumptions for annova
 
 #### Backstroke
 
 
 ```python
-fig = sm.qqplot(df_backstroke["Time"], line='s')
+plt.figure(figsize=(10, 8), dpi=200)
+stats.probplot(df_backstroke["Time"], dist="norm", plot = plt)
+plt.title("Normal QQ plot Backstroke", fontsize=15)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Theoretical quantiles', fontsize=15)
+plt.ylabel('Time in seconds', fontsize=15)
 plt.show()
-fig.savefig("Plots/qqplot_backstroke.pdf", dpi=180)
+plt.savefig("Plots/QQ_Backstroke.pdf")
 ```
 
-    C:\Users\raj24\anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string "bo" (-> marker='o'). The keyword argument will take precedence.
-      ax.plot(x, y, fmt, **plot_style)
+
+    
+![png](output_19_0.png)
     
 
 
-    
-![png](output_18_1.png)
-    
+
+    <Figure size 432x288 with 0 Axes>
 
 
 #### Breaststroke
 
 
 ```python
-fig = sm.qqplot(df_breaststroke["Time"], line='s')
+plt.figure(figsize=(10, 8), dpi=200)
+stats.probplot(df_breaststroke["Time"], dist="norm", plot = plt)
+plt.title("Normal QQ plot Breaststroke", fontsize=15)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Theoretical quantiles', fontsize=15)
+plt.ylabel('Time in seconds', fontsize=15)
 plt.show()
-fig.savefig("Plots/qqplot_breaststroke.pdf", dpi=180)
+plt.savefig("Plots/QQ_Breaststroke.pdf")
 ```
 
-    C:\Users\raj24\anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string "bo" (-> marker='o'). The keyword argument will take precedence.
-      ax.plot(x, y, fmt, **plot_style)
+
+    
+![png](output_21_0.png)
     
 
 
-    
-![png](output_20_1.png)
-    
+
+    <Figure size 432x288 with 0 Axes>
 
 
 #### Butterfly
 
 
 ```python
-fig = sm.qqplot(df_butterfly["Time"], line='s')
+plt.figure(figsize=(10, 8), dpi=200)
+stats.probplot(df_butterfly["Time"], dist="norm", plot = plt)
+plt.title("Normal QQ plot Butterfly", fontsize=15)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Theoretical quantiles', fontsize=15)
+plt.ylabel('Time in seconds', fontsize=15)
 plt.show()
-fig.savefig("Plots/qqplot_butterfly.pdf", dpi=180)
+plt.savefig("Plots/QQ_Butterfly.pdf")
 ```
 
-    C:\Users\raj24\anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string "bo" (-> marker='o'). The keyword argument will take precedence.
-      ax.plot(x, y, fmt, **plot_style)
+
+    
+![png](output_23_0.png)
     
 
 
-    
-![png](output_22_1.png)
-    
+
+    <Figure size 432x288 with 0 Axes>
 
 
 #### Freestyle
 
 
 ```python
-fig = sm.qqplot(df_freestyle["Time"], line='s')
+plt.figure(figsize=(10, 8), dpi=200)
+stats.probplot(df_freestyle["Time"], dist="norm", plot = plt)
+plt.title("Normal QQ plot Freestyle", fontsize=15)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Theoretical quantiles', fontsize=15)
+plt.ylabel('Time in seconds', fontsize=15)
 plt.show()
-fig.savefig("Plots/qqplot_freestyle.pdf", dpi=180)
+plt.savefig("Plots/QQ_Freestyle.pdf")
 ```
 
-    C:\Users\raj24\anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string "bo" (-> marker='o'). The keyword argument will take precedence.
-      ax.plot(x, y, fmt, **plot_style)
+
+    
+![png](output_25_0.png)
     
 
 
-    
-![png](output_24_1.png)
-    
+
+    <Figure size 432x288 with 0 Axes>
 
 
 #### Medley
 
 
 ```python
-fig = sm.qqplot(df_medley["Time"], line='s')
+plt.figure(figsize=(10, 8), dpi=200)
+stats.probplot(df_medley["Time"], dist="norm", plot = plt)
+plt.title("Normal QQ plot Medley", fontsize=15)
+plt.rc('xtick', labelsize=15)
+plt.rc('ytick', labelsize=15)
+plt.xlabel('Theoretical quantiles', fontsize=15)
+plt.ylabel('Time in seconds', fontsize=15)
 plt.show()
-fig.savefig("Plots/qqplot_medley.pdf", dpi=180)
+plt.savefig("Plots/QQ_Medley.pdf")
 ```
 
-    C:\Users\raj24\anaconda3\lib\site-packages\statsmodels\graphics\gofplots.py:993: UserWarning: marker is redundantly defined by the 'marker' keyword argument and the fmt string "bo" (-> marker='o'). The keyword argument will take precedence.
-      ax.plot(x, y, fmt, **plot_style)
+
+    
+![png](output_27_0.png)
     
 
 
-    
-![png](output_26_1.png)
-    
+
+    <Figure size 432x288 with 0 Axes>
 
 
 Annova Test - Used to conduct a global test
@@ -692,8 +763,7 @@ result_anova
 
 
 ```python
-# converting result to tex-format
-#print(result_anova.round(2))
+# converting result to use in latex report
 print(result_anova.round(2).to_latex())
 ```
 
@@ -915,8 +985,12 @@ df
 
 
 
+#### Holm-Bonferroni Method 
+###### The Holm-Bonferroni Method (also called Holm’s Sequential Bonferroni Procedure) is a way to deal with familywise error rates (FWER) for multiple hypothesis tests. It is a modification of the Bonferroni correction. The Bonferroni correction reduces the possibility of getting a statistically significant result (i.e. a Type I error) when performing multiple tests. Although the Bonferroni is simple to calculate, it suffers from a lack of statistical power. The Holm-Bonferroni method is also fairly simple to calculate, but it is more powerful than the single-step Bonferroni.
+
 
 ```python
-# converting result to tex-format
-#pd.DataFrame(df).to_latex()
+#ToDo: correct the test results with the holm bonferonni correction method
+# reference: https://www.statisticshowto.com/holm-bonferroni-method/
+# reference Holm, S. 1979. A simple sequential rejective multiple test procedure. Scandinavian Journal of Statistics 6:65-70
 ```
