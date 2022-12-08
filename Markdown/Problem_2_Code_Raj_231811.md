@@ -23,6 +23,7 @@ from scipy import stats
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 from statsmodels.stats.weightstats import ttest_ind as ttest
+import numpy as np
 
 # used for plotting
 from matplotlib import pyplot as plt
@@ -287,22 +288,16 @@ print("NAN Rows: ", len(nan_rows))
 
 
 ```python
-# Plot histogram to check distribution
-plt.figure(figsize=(10, 8), dpi=200)
-freq_dist_fig = data_unique["Time"].plot(kind = "hist", density = True, bins=50)
-plt.rc('xtick', labelsize=15)
-plt.rc('ytick', labelsize=15)
-plt.xlabel('Time in seconds', fontsize=15)
-plt.ylabel('Frequency', fontsize=15)
-plt.show()
-freq_dist_fig.figure.savefig('Plots/Hist_Frequency_Distribution.pdf')
+# # Plot histogram to check distribution
+# plt.figure(figsize=(10, 8), dpi=100)
+# freq_dist_fig = data_unique["Time"].plot(kind = "hist", density = True, bins=15)
+# plt.rc('xtick', labelsize=15)
+# plt.rc('ytick', labelsize=15)
+# plt.xlabel('Time in seconds', fontsize=15)
+# plt.ylabel('Frequency', fontsize=15)
+# plt.show()
+# freq_dist_fig.figure.savefig('Plots/Hist_Frequency_Distribution.pdf')
 ```
-
-
-    
-![png](output_7_0.png)
-    
-
 
 Description of the variables
 
@@ -405,6 +400,7 @@ category_list = list(grouped_data)
 x = grouped_data["Time"].describe()
 x["IQR"] = x["75%"] - x["25%"]
 x.round(2)
+#print(x.round(2).to_latex())
 ```
 
 
@@ -539,13 +535,13 @@ Descriptive Analysis of variables
 
 ```python
 # Generate box-plot for swimming categories based on time
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 sns.boxplot(y="Category", x="Time", data=data_unique)
 sns.stripplot(y="Category", x="Time", color='black',alpha=0.3,data=data_unique)
-plt.rc('xtick', labelsize=15)
-plt.rc('ytick', labelsize=15)
-plt.xlabel('Time in seconds', fontsize=15)
-plt.ylabel('Swimming Category', fontsize=15)
+plt.rc('xtick', labelsize=20)
+plt.rc('ytick', labelsize=20)
+plt.xlabel('Time in Seconds', fontsize=15)
+plt.ylabel('Swimming Categories', fontsize=15)
 plt.show()
 plt.savefig('Plots/Boxplot_Swimming_Categories.pdf')
 ```
@@ -560,43 +556,26 @@ plt.savefig('Plots/Boxplot_Swimming_Categories.pdf')
     <Figure size 432x288 with 0 Axes>
 
 
-
-```python
-# Check individual swimming category variance
-print("variance: %.2f" % df_backstroke['Time'].var())
-print("variance: %.2f" % df_breaststroke['Time'].var())
-print("variance: %.2f" % df_butterfly['Time'].var())
-print("variance: %.2f" % df_freestyle['Time'].var())
-print("variance: %.2f" % df_medley['Time'].var())
-```
-
-    variance: 3.43
-    variance: 2.27
-    variance: 6.82
-    variance: 2.43
-    variance: 2.52
-    
-
 QQ Plots - Used to test assumptions for annova
 
 #### Backstroke
 
 
 ```python
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 stats.probplot(df_backstroke["Time"], dist="norm", plot = plt)
-plt.title("Normal QQ plot Backstroke", fontsize=15)
+plt.title("Normal QQ plot Backstroke", fontsize=20)
 plt.rc('xtick', labelsize=15)
 plt.rc('ytick', labelsize=15)
-plt.xlabel('Theoretical quantiles', fontsize=15)
-plt.ylabel('Time in seconds', fontsize=15)
+plt.xlabel('Theoretical Quantiles', fontsize=20)
+plt.ylabel('Sample Quantiles', fontsize=20)
 plt.show()
 plt.savefig("Plots/QQ_Backstroke.pdf")
 ```
 
 
     
-![png](output_19_0.png)
+![png](output_18_0.png)
     
 
 
@@ -608,20 +587,20 @@ plt.savefig("Plots/QQ_Backstroke.pdf")
 
 
 ```python
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 stats.probplot(df_breaststroke["Time"], dist="norm", plot = plt)
-plt.title("Normal QQ plot Breaststroke", fontsize=15)
+plt.title("Normal QQ plot Breaststroke", fontsize=20)
 plt.rc('xtick', labelsize=15)
 plt.rc('ytick', labelsize=15)
-plt.xlabel('Theoretical quantiles', fontsize=15)
-plt.ylabel('Time in seconds', fontsize=15)
+plt.xlabel('Theoretical Quantiles', fontsize=20)
+plt.ylabel('Sample Quantiles', fontsize=20)
 plt.show()
 plt.savefig("Plots/QQ_Breaststroke.pdf")
 ```
 
 
     
-![png](output_21_0.png)
+![png](output_20_0.png)
     
 
 
@@ -633,20 +612,20 @@ plt.savefig("Plots/QQ_Breaststroke.pdf")
 
 
 ```python
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 stats.probplot(df_butterfly["Time"], dist="norm", plot = plt)
-plt.title("Normal QQ plot Butterfly", fontsize=15)
+plt.title("Normal QQ plot Butterfly", fontsize=20)
 plt.rc('xtick', labelsize=15)
 plt.rc('ytick', labelsize=15)
-plt.xlabel('Theoretical quantiles', fontsize=15)
-plt.ylabel('Time in seconds', fontsize=15)
+plt.xlabel('Theoretical Quantiles', fontsize=20)
+plt.ylabel('Sample Quantiles', fontsize=20)
 plt.show()
 plt.savefig("Plots/QQ_Butterfly.pdf")
 ```
 
 
     
-![png](output_23_0.png)
+![png](output_22_0.png)
     
 
 
@@ -658,20 +637,20 @@ plt.savefig("Plots/QQ_Butterfly.pdf")
 
 
 ```python
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 stats.probplot(df_freestyle["Time"], dist="norm", plot = plt)
-plt.title("Normal QQ plot Freestyle", fontsize=15)
+plt.title("Normal QQ plot Freestyle", fontsize=20)
 plt.rc('xtick', labelsize=15)
 plt.rc('ytick', labelsize=15)
-plt.xlabel('Theoretical quantiles', fontsize=15)
-plt.ylabel('Time in seconds', fontsize=15)
+plt.xlabel('Theoretical Quantiles', fontsize=20)
+plt.ylabel('Sample Quantiles', fontsize=20)
 plt.show()
 plt.savefig("Plots/QQ_Freestyle.pdf")
 ```
 
 
     
-![png](output_25_0.png)
+![png](output_24_0.png)
     
 
 
@@ -683,20 +662,20 @@ plt.savefig("Plots/QQ_Freestyle.pdf")
 
 
 ```python
-plt.figure(figsize=(10, 8), dpi=200)
+plt.figure(figsize=(10, 8), dpi=80)
 stats.probplot(df_medley["Time"], dist="norm", plot = plt)
-plt.title("Normal QQ plot Medley", fontsize=15)
+plt.title("Normal QQ plot Medley", fontsize=20)
 plt.rc('xtick', labelsize=15)
 plt.rc('ytick', labelsize=15)
-plt.xlabel('Theoretical quantiles', fontsize=15)
-plt.ylabel('Time in seconds', fontsize=15)
+plt.xlabel('Theoretical Quantiles', fontsize=20)
+plt.ylabel('Sample Quantiles', fontsize=20)
 plt.show()
 plt.savefig("Plots/QQ_Medley.pdf")
 ```
 
 
     
-![png](output_27_0.png)
+![png](output_26_0.png)
     
 
 
@@ -708,9 +687,10 @@ Annova Test - Used to conduct a global test
 
 
 ```python
-st_model = ols('Time ~ C(Category)', data=data_unique).fit()
-result_anova = sm.stats.anova_lm(st_model, typ=2)
-result_anova
+from bioinfokit.analys import stat
+res = stat()
+res.anova_stat(df=data_unique, res_var='Time', anova_model='Time ~ C(Category)')
+res.anova_summary[["df","F","PR(>F)"]]
 ```
 
 
@@ -734,7 +714,6 @@ result_anova
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>sum_sq</th>
       <th>df</th>
       <th>F</th>
       <th>PR(&gt;F)</th>
@@ -743,14 +722,12 @@ result_anova
   <tbody>
     <tr>
       <th>C(Category)</th>
-      <td>5327.241994</td>
       <td>4.0</td>
       <td>385.922627</td>
       <td>6.076029e-46</td>
     </tr>
     <tr>
       <th>Residual</th>
-      <td>234.666504</td>
       <td>68.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -764,233 +741,93 @@ result_anova
 
 ```python
 # converting result to use in latex report
-print(result_anova.round(2).to_latex())
+print(res.anova_summary.round(2))
+#print(res.anova_summary.round(2).to_latex())
 ```
 
-    \begin{tabular}{lrrrr}
-    \toprule
-    {} &   sum\_sq &    df &       F &  PR(>F) \\
-    \midrule
-    C(Category) &  5327.24 &   4.0 &  385.92 &     0.0 \\
-    Residual    &   234.67 &  68.0 &     NaN &     NaN \\
-    \bottomrule
-    \end{tabular}
-    
+                   df   sum_sq  mean_sq       F  PR(>F)
+    C(Category)   4.0  5327.24  1331.81  385.92     0.0
+    Residual     68.0   234.67     3.45     NaN     NaN
     
 
-Conducting Two Sample t-test
+Conducting Multiple Two Sample T-Test
 
 
 ```python
-from statsmodels.stats.multicomp import MultiComparison
-from scipy.stats import ttest_ind
-   
-comp = MultiComparison(data_unique['Time'], data_unique['Category'])
-tbl, a1, a2 = comp.allpairtest(ttest_ind,method="bonf",alpha = 0.05)
-tbl
+# data_unique.groupby('Category').describe()
+
+############################# 1 #################################
+#res = stats.ttest_ind(df_backstroke["Time"], df_breaststroke["Time"], equal_var=True)
+#res = stats.ttest_ind(df_backstroke["Time"], df_medley["Time"], equal_var=True)
+
+#display(res)
+############################ 2 #######################
+# import pingouin as pg
+
+# res = pg.ttest(df_backstroke["Time"], df_breaststroke["Time"], correction=False)
+# display(res)
+
+####################### 3 ###########################
+# from statsmodels.stats.weightstats import ttest_ind
+
+# ttest_ind(df_backstroke["Time"], df_breaststroke["Time"])
 ```
 
-
-
-
-<table class="simpletable">
-<caption>Test Multiple Comparison ttest_ind 
-FWER=0.05 method=bonf
-alphacSidak=0.01, alphacBonf=0.005</caption>
-<tr>
-     <th>group1</th>       <th>group2</th>      <th>stat</th>    <th>pval</th>  <th>pval_corr</th> <th>reject</th>
-</tr>
-<tr>
-   <td>Backstroke</td>  <td>Breaststroke</td> <td>-23.4029</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-   <td>Backstroke</td>    <td>Butterfly</td>   <td>-0.3231</td> <td>0.7492</td>    <td>1.0</td>     <td>False</td>
-</tr>
-<tr>
-   <td>Backstroke</td>    <td>Freestyle</td>   <td>18.9651</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-   <td>Backstroke</td>     <td>Medley</td>     <td>-4.2368</td> <td>0.0002</td>  <td>0.0022</td>    <td>True</td> 
-</tr>
-<tr>
-  <td>Breaststroke</td>   <td>Butterfly</td>   <td>18.1855</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-  <td>Breaststroke</td>   <td>Freestyle</td>   <td>47.2693</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-  <td>Breaststroke</td>    <td>Medley</td>     <td>21.6131</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-    <td>Butterfly</td>    <td>Freestyle</td>   <td>15.5252</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-<tr>
-    <td>Butterfly</td>     <td>Medley</td>     <td>-3.0638</td> <td>0.0048</td>  <td>0.0479</td>    <td>True</td> 
-</tr>
-<tr>
-    <td>Freestyle</td>     <td>Medley</td>    <td>-25.9482</td>   <td>0.0</td>     <td>0.0</td>     <td>True</td> 
-</tr>
-</table>
-
-
-
-Bonferroni Correlation
+Multiple Two Sample T-Test and Bonferroni Correction
 
 
 ```python
-df = pd.DataFrame(tbl,columns=["group1","group2","stat","pval","pval_corr","reject_corr"])
-df = df.iloc[1:]
-df['reject'] = df['pval'].astype(str) <= str(0.05)
-print("Multiple Comparison t-test Significance_value=0.05 FWER=0.26 method=bonf NEW_FWER=0.05, Adjusted_Significance_value=0.003")
-df
+from scipy import stats
+import statsmodels.stats.multicomp as mc
+
+comp1 = mc.MultiComparison(data_unique["Time"], data_unique["Category"])
+tbl, a1, a2 = comp1.allpairtest(stats.ttest_ind, method= "bonf")
+print(tbl)
 ```
 
-    Multiple Comparison t-test Significance_value=0.05 FWER=0.26 method=bonf NEW_FWER=0.05, Adjusted_Significance_value=0.003
+    Test Multiple Comparison ttest_ind 
+    FWER=0.05 method=bonf
+    alphacSidak=0.01, alphacBonf=0.005
+    ==========================================================
+       group1       group2      stat    pval  pval_corr reject
+    ----------------------------------------------------------
+      Backstroke Breaststroke -23.4029    0.0       0.0   True
+      Backstroke    Butterfly  -0.3231 0.7492       1.0  False
+      Backstroke    Freestyle  18.9651    0.0       0.0   True
+      Backstroke       Medley  -4.2368 0.0002    0.0022   True
+    Breaststroke    Butterfly  18.1855    0.0       0.0   True
+    Breaststroke    Freestyle  47.2693    0.0       0.0   True
+    Breaststroke       Medley  21.6131    0.0       0.0   True
+       Butterfly    Freestyle  15.5252    0.0       0.0   True
+       Butterfly       Medley  -3.0638 0.0048    0.0479   True
+       Freestyle       Medley -25.9482    0.0       0.0   True
+    ----------------------------------------------------------
     
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>group1</th>
-      <th>group2</th>
-      <th>stat</th>
-      <th>pval</th>
-      <th>pval_corr</th>
-      <th>reject_corr</th>
-      <th>reject</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>Backstroke</td>
-      <td>Breaststroke</td>
-      <td>-23.4029</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Backstroke</td>
-      <td>Butterfly</td>
-      <td>-0.3231</td>
-      <td>0.7492</td>
-      <td>1.0</td>
-      <td>False</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Backstroke</td>
-      <td>Freestyle</td>
-      <td>18.9651</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Backstroke</td>
-      <td>Medley</td>
-      <td>-4.2368</td>
-      <td>0.0002</td>
-      <td>0.0022</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Breaststroke</td>
-      <td>Butterfly</td>
-      <td>18.1855</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Breaststroke</td>
-      <td>Freestyle</td>
-      <td>47.2693</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Breaststroke</td>
-      <td>Medley</td>
-      <td>21.6131</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Butterfly</td>
-      <td>Freestyle</td>
-      <td>15.5252</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Butterfly</td>
-      <td>Medley</td>
-      <td>-3.0638</td>
-      <td>0.0048</td>
-      <td>0.0479</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Freestyle</td>
-      <td>Medley</td>
-      <td>-25.9482</td>
-      <td>0.0</td>
-      <td>0.0</td>
-      <td>True</td>
-      <td>True</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-#### Holm-Bonferroni Method 
-###### The Holm-Bonferroni Method (also called Holm’s Sequential Bonferroni Procedure) is a way to deal with familywise error rates (FWER) for multiple hypothesis tests. It is a modification of the Bonferroni correction. The Bonferroni correction reduces the possibility of getting a statistically significant result (i.e. a Type I error) when performing multiple tests. Although the Bonferroni is simple to calculate, it suffers from a lack of statistical power. The Holm-Bonferroni method is also fairly simple to calculate, but it is more powerful than the single-step Bonferroni.
+Multiple Two Sample T-Test and Holm-Bonferroni Correction
 
 
 ```python
-#ToDo: correct the test results with the holm bonferonni correction method
-# reference: https://www.statisticshowto.com/holm-bonferroni-method/
-# reference Holm, S. 1979. A simple sequential rejective multiple test procedure. Scandinavian Journal of Statistics 6:65-70
+comp2 = mc.MultiComparison(data_unique["Time"], data_unique["Category"])
+tbl, a1, a2 = comp2.allpairtest(stats.ttest_ind, method= "holm")
+print(tbl)
 ```
+
+    Test Multiple Comparison ttest_ind 
+    FWER=0.05 method=holm
+    alphacSidak=0.01, alphacBonf=0.005
+    ==========================================================
+       group1       group2      stat    pval  pval_corr reject
+    ----------------------------------------------------------
+      Backstroke Breaststroke -23.4029    0.0       0.0   True
+      Backstroke    Butterfly  -0.3231 0.7492    0.7492  False
+      Backstroke    Freestyle  18.9651    0.0       0.0   True
+      Backstroke       Medley  -4.2368 0.0002    0.0007   True
+    Breaststroke    Butterfly  18.1855    0.0       0.0   True
+    Breaststroke    Freestyle  47.2693    0.0       0.0   True
+    Breaststroke       Medley  21.6131    0.0       0.0   True
+       Butterfly    Freestyle  15.5252    0.0       0.0   True
+       Butterfly       Medley  -3.0638 0.0048    0.0096   True
+       Freestyle       Medley -25.9482    0.0       0.0   True
+    ----------------------------------------------------------
+    
