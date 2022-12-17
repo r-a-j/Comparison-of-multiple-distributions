@@ -1,14 +1,6 @@
 ## Project - 2 
 (Winter Semester 2022 - 2023)\
-Comparison of multiple distributions\
-Author - Raj Anilbhai Pawar\
-Matriculation Number - 231811\
-Group - 17\
-Raj Anilbhai Pawar\
-Amritha Sukhdev Singh Agarwal\
-Sagar Basnet\
-Muhammad Fahad\
-Siddhartha Kark
+Comparison of multiple distributions
 
 
 ```python
