@@ -1,6 +1,6 @@
 The European Aquatics Championships 2022 took place in Rome and consisted of 75 medal events in the disciplines swimming, open water swimming, artistic swimming, diving, and high diving. More details [here](https://www.roma2022.eu/en/).
 
-The given dataset SwimmingTimes.csv contains the results (time in seconds) of the women’s 200m semi finals in the 5 categories breaststroke, backstroke, butterfly, freestyle, and medley. The original data are available [here](https://roma2022.microplustimingservices.com/indexRoma2022_web.php).
+The given dataset SwimmingTimes.csv contains the results (time in seconds) of the women’s 200m semi finals in the 5 categories breaststroke, backstroke, butterfly, freestyle, and medley. The original data are available [here](https://roma2022masters.microplustimingservices.com/indexRoma2022_web.php).
 
 ### Tasks
 
